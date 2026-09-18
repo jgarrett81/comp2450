@@ -27,19 +27,19 @@ Help the grader find each of the four required ties.
 
 **Floor 0 (ADT).** The available menu actions are stored in:
 
-- Container type: `<...>`
-- Declared at: `battle/Battle.cpp:<line>`
-- ADT name + one-sentence defence: (paste your comment here, or quote the comment in the code)
+- Container type: `Bag<...>`
+- Declared at: `battle/Battle.cpp:<line 156>`
+- ADT name + one-sentence defence: (Bag because can just pull whatever is called no order needed)
 
 **Floor 1 (search).** `findByName<Item>` is called at:
 
-- `battle/Battle.cpp:<line>` (Use-item branch)
+- `battle/Battle.cpp:<line 132>` (Use-item branch)
 
 **Floor 2 (sort).** The at-display sort (`std::sort` with a comparator, or your Floor 2 `sortInventory`) is called at:
 
-- `battle/Battle.cpp:<line>` (before displaying the items menu)
-- Sort criterion: `<...>` (e.g., descending value — the healing-power stand-in — or ascending weight)
-- One-sentence reason: (why this criterion?)
+- `battle/Battle.cpp:<line 119>` (before displaying the items menu)
+- Sort criterion: `<desc value>` (e.g., descending value — the healing-power stand-in — or ascending weight)
+- One-sentence reason: (why this criterion?) 
 
 **Floor 3 (templates + exceptions).** `BattleException` (or `BagException` where a bad index is the fault) is:
 

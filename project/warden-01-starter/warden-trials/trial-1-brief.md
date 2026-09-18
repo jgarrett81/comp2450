@@ -13,6 +13,9 @@ AI is welcome to *check* your answers; it is not welcome to *write your sentence
 > Your battle's "Use item" menu shows the *currently usable* items in your hero's inventory on this turn. Name the right ADT for that menu. Defend the choice against its closest neighbour (e.g., why `bag` instead of `set`, or `list` instead of `bag`).
 
 (your answer — 50–100 words)
+I would use a bag over the other ADTs because it allows for the items to be accessed for anywhere inside the bag as 
+order doesn't really matter and compared to a set it allows for duplicate items so if I had multiple let's say 
+healing items it would allow me to access both of them comapred to a set where there would only be one
 
 ---
 
@@ -21,6 +24,9 @@ AI is welcome to *check* your answers; it is not welcome to *write your sentence
 > Your inventory is kept sorted by healing power (in this codebase an item's `value` measures its potency, so `value` plays the healing-power role). The player types `use Healing potion`. Linear or binary search to find it by name? Justify, and give the Big-O for each.
 
 (your answer — 50–100 words)
+Binary search because the inventory is in a specific order so worse case it would take O(log(n)) compared to linear's O(n) 
+which could end up checking every item in the inventory.  If it wasn't in order than theoretically binary could screw up
+it's search but that one reason is why it's better than linear.
 
 ---
 
@@ -32,14 +38,18 @@ AI is welcome to *check* your answers; it is not welcome to *write your sentence
 
 ```cpp
 // by healing power — i.e. by value
-auto byValue  = /* your lambda */;
+auto byValue  = [](const Item& a, const Item& b){
+					return a.value < b.value;
+					};
 
 // by weight
-auto byWeight = /* your lambda */;
+auto byWeight = [](const Item& a, const Item& b){
+					return a.weight < b.weight;
+					};;
 ```
 
 (one-sentence answer — what language feature?)
-
+Lambda because it allows you to change the comparator for std::sort which then allows for the sorting of either value
 ---
 
 ## 4. Floor 3 — templates & exceptions
@@ -47,3 +57,7 @@ auto byWeight = /* your lambda */;
 > Why does `Bag<T>` live in `Bag.h` instead of `Bag.cpp`? And: when the player types `9` for a 4-option menu, where in your code should the validation **throw**, and where should it **catch**?
 
 (your answer — 50–100 words)
+Bag<T> is in Bag.h over bag.cpp because when the compiler runs it can generate the necessary code for 
+the template based on implementations of each data type when used.  
+Your code validation should throw whenever 9 or any number value outside the range is read and the catch 
+should be right after the code that causes it to throw so it can be reran or end the program.

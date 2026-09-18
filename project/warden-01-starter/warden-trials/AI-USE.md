@@ -11,13 +11,14 @@ Example entries:
 
 ## Trial I — The Foundations Brief
 
-(your declaration)
+used ChatGPT to check answers for Q 1,3,4 after writing answers to validate myself and make sure I was correct and felt confident enough in my answers, was not used to write answers
 
 ## Trial II — The Critique
 
 This trial **requires** AI use. The full prompt + reply + critique are in `trial-2-critique.md`. If you used a different LLM for any other reason on this trial (e.g., to look up syntax), declare it here:
 
 (your declaration)
+used ChatGPT only for the things asked of the assignment and for explanation
 
 ## Trial III — The Encounter
 

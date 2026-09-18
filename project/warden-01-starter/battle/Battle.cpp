@@ -61,6 +61,7 @@
 
 #include "Battle.h"
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 
@@ -69,6 +70,7 @@
 #include "../hero/Item.h"
 #include "../bestiary/Search.h"
 #include "../hero/Sort.h"
+using namespace std;
 
 namespace dungeon {
 
@@ -83,54 +85,131 @@ constexpr int kWardenStartHP   = 50;
 constexpr int kPlayerAttackDmg = 6;   // damage per Attack action
 constexpr int kWardenAttackDmg = 4;   // warden's retaliation damage
 
+enum class MenuActions { Attack, UseItem, Inspect, Flee };
+
+struct MenuOptions {
+    int number;
+    string label;
+    MenuActions actions;
+};
+
+void printMenu(Bag<MenuOptions> menu, int playerHP, int wardenHP) {
+    cout << endl << "======Your Turn======" << endl;
+    cout << "Your HP: " << playerHP << endl;
+    cout << "Warden HP: " << wardenHP << endl;
+
+    for (size_t i = 0; i < menu.size(); i++) {
+        cout << menu.at(i).number << ". " << menu.at(i).label << endl;
+    }
+    cout << "--> ";
+}
+
+void useItem(Hero& hero, int& playerHP) {
+    // I couldn't figure out how to get this to work on my own typed over from starter 4 plus I changed a little bit to get it to work with my code
+
+
+    if (hero.inventory.empty()) {
+        std::cout << "  Your satchel is empty.\n";
+        return;
+    }
+
+    // F2 — sort the menu by value descending so the most valuable item
+    // shows first. Sort routine reused from Floor 2; comparator is a
+    // lambda.
+    sortInventory(hero, "value desc");
+    cout << "  Choose an item by name:\n";
+    printInventory(hero);
+    cout << "  > ";
+
+    std::string name;
+    getline(cin >> ws, name);
+    if (name.empty()) {
+        cout << "  You hesitate." << endl;
+        return;
+    }
+
+    // F1 — findByName<Item> lookup.
+    const Item* it = findByName<Item>(hero.inventory, name);
+    if (!it) {
+        // F3 — no such item: throw, caught by the battle-loop catch.
+        throw BagException(0, hero.inventory.size());
+    }
+
+    if (it->name == "Healing potion") {
+        playerHP = std::min(playerHP + 12, kPlayerStartHP);
+        std::cout << "  You drink " << it->name << ". HP -> " << playerHP << ".\n";
+    }
+    else {
+        std::cout << "  You ready " << it->name << " — but it is not a consumable.\n";
+    }
+}
+
 }  // anonymous namespace
 
 BattleOutcome runWardenBattle(Hero& hero) {
     // TODO — write the boss battle. Suggested outline (yours to refactor):
     //
-    //   int playerHP = kPlayerStartHP;
-    //   int wardenHP = kWardenStartHP;
-    //
-    //   while (playerHP > 0 && wardenHP > 0) {
-    //       print state (HPs, last action — your choice).
-    //
-    //       try {
-    //           show menu (using your F0 container of actions).
-    //           read input.
-    //           if invalid → throw BattleException(...) [F3 — throw].
-    //           dispatch on the action:
-    //               Attack:    wardenHP -= kPlayerAttackDmg;
-    //                          if wardenHP > 0, playerHP -= kWardenAttackDmg.
-    //               Use item:  std::sort(hero.inventory.begin(),
-    //                                    hero.inventory.end(),
-    //                                    yourComparator)             [F2].
-    //                          show sorted menu, read item name.
-    //                          const Item* it = findByName<Item>(
-    //                              hero.inventory, name);             [F1]
-    //                          if (!it) throw BattleException(...);   [F3]
-    //                          apply effect (heal? buff next attack? …).
-    //                          end turn.
-    //               Inspect:   print warden state. FREE — do NOT end turn.
-    //               Flee:      return BattleOutcome::Fled.
-    //       }
-    //       catch (const std::exception& e) {                        [F3 — catch]
-    //           std::cout << "  " << e.what() << "  Try again.\n";
-    //           continue;   // re-prompt; turn does NOT advance
-    //       }
-    //   }
-    //
-    //   return wardenHP <= 0 ? BattleOutcome::Victory
-    //                        : BattleOutcome::Defeat;
-    //
-    // Decompose into helpers however you want. The contract main.cpp
-    // depends on is just runWardenBattle(Hero&).
-    //
-    // Replace the placeholder body below.
+    int playerHP = kPlayerStartHP;
+    int wardenHP = kWardenStartHP;
+    int choice;
 
-    (void)hero;
-    std::cout << "  (Battle scaffold — runWardenBattle is not yet written.)\n"
-              << "  (Open battle/Battle.cpp and follow the TODOs.)\n";
-    return BattleOutcome::Fled;
+    Bag<MenuOptions> menu;
+    menu.push_back({ 1, "Attack",   MenuActions::Attack});
+    menu.push_back({ 2, "Use Item", MenuActions::UseItem});
+    menu.push_back({ 3, "Inspect",  MenuActions::Inspect});
+    menu.push_back({ 4, "Flee",     MenuActions::Flee});
+    
+    while (playerHP > 0 && wardenHP > 0) {
+    
+        try {
+            printMenu(menu, playerHP, wardenHP);
+            cin >> choice;
+            if (choice < 1 || choice > 4) {
+                throw(BattleException("Input must be between 1 and 4."));
+            }
+            else if (choice == 1) {
+                wardenHP -= kPlayerAttackDmg;
+                cout << "You did " << kPlayerAttackDmg << "damage to Warden.  Warden HP --> ";
+                if (wardenHP <= 0) {
+                    cout << "0" << endl;
+                }
+                else { 
+                    cout << wardenHP << endl;
+                    playerHP -= kWardenAttackDmg;
+                    cout << "Warden attacked back and did " << kWardenAttackDmg << " damage to You.  Your HP --> " << playerHP << endl;
+                }
+            }
+            else if (choice == 2) {
+                // this as well from 4 like useItem
+                useItem(hero, playerHP);
+                // Using an item ends the turn — the warden retaliates.
+                if (wardenHP > 0 && playerHP > 0) {
+                    playerHP -= kWardenAttackDmg;
+                    cout << "The Warden strikes while you fumble.  Your HP -> " << playerHP << endl;
+                    cout << "the Warden struck for " << kWardenAttackDmg << endl;
+                }
+            }
+            else if (choice == 3) {
+                cout << "Warden HP: " << wardenHP << "/" << kWardenStartHP << endl;
+                cout << "No Visible Weaknesses (Free Action)." << endl;
+            }
+            else if (choice == 4) {
+                return BattleOutcome::Fled;
+            }
+        }
+        catch (const exception& e) {
+             cout << "  " << e.what() << " Try again." << endl << endl;
+             continue;   // re-prompt; turn does NOT advance
+        }
+    }
+
+    if (wardenHP <= 0) {
+        return BattleOutcome::Victory;
+    }
+    else if (playerHP <= 0) {
+        return BattleOutcome::Defeat;
+    }
+    
 }
 
 }  // namespace dungeon
