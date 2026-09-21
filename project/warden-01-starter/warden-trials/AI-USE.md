@@ -24,4 +24,6 @@ used ChatGPT only for the things asked of the assignment and for explanation
 
 (your declaration)
 
+used ChatGPT to help find an error I made that I couldn't find and to try and figure out the code for UseItem a little bit before just using your code
+
 The two functions in your battle code that you wrote *without* AI assistance are named in `encounter-notes.md`. Friday's quiz pulls from those.

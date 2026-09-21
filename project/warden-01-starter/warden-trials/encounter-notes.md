@@ -16,8 +16,8 @@ This file is the grader's map of your battle code. Help us find each piece. Be s
 
 These are the functions Friday's quiz can ask me to modify on paper. I wrote each of these by hand, with no autocomplete on the body. Pick functions you know cold — three of the four quiz questions pull from these.
 
-1. `<function-name>` in `<file>:<approximate line range>`
-2. `<function-name>` in `<file>:<approximate line range>`
+1. `<printMenu>` in `<Battle.cpp>:<96-105>`
+2. `<linearSearch>` in `<Search.cpp>:<20-31>`
 
 ---
 
@@ -39,18 +39,22 @@ Help the grader find each of the four required ties.
 
 - `battle/Battle.cpp:<line 119>` (before displaying the items menu)
 - Sort criterion: `<desc value>` (e.g., descending value — the healing-power stand-in — or ascending weight)
-- One-sentence reason: (why this criterion?) 
+- One-sentence reason: (why this criterion?) Value felt like the best way to sort and highest to lowest looks better in the inventory, gives best options first
 
 **Floor 3 (templates + exceptions).** `BattleException` (or `BagException` where a bad index is the fault) is:
 
-- Thrown at: `battle/Battle.cpp:<line>` on `<condition>`
-- Caught at: `battle/Battle.cpp:<line>` (must be **inside** the battle loop, not in main)
+- Thrown at: `battle/Battle.cpp:<line 168>` on `<BattleException>`
+- Caught at: `battle/Battle.cpp:<line 200>` (must be **inside** the battle loop, not in main)
 
 ---
 
 ## Reflection  *( ≤ 200 words )*
 
 Which Floor's tie was hardest to wire in, and why? Was anything obvious in hindsight that wasn't obvious when you started?
+
+Probably floor 1 or 2 because it was just the part of the assignment I struggled the most with, I struggled figuring out how to get my UseItem to work so trying 
+implement the two floors were part of a struggle.  I also struggled a little to get the findbyName to work perfectly but ended up getting it to work I think.
+One thing that was easier than expected for me was the throw and catching of the exceptions, I thought they would be harder to implement but honestly weren't that bad.
 
 (your reflection)
 
