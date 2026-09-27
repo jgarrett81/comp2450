@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+using namespace std;
 
 namespace dungeon {
 
@@ -96,13 +97,17 @@ void printLog(const Hero& hero, std::size_t n) {
 // Until you implement this, `log --oldest` will print a placeholder
 // and the build will stay green so the rest of the game still runs.
 void printLogOldest(const Hero& hero, std::size_t n) {
-    (void)n;
     if (hero.eventLog.empty()) {
-        std::cout << "  (the chain is empty — nothing to remember yet)\n";
+        cout << "The chain is empty - nothing to remember yet." << endl;
         return;
     }
-    std::cout << "  (printLogOldest not yet implemented — see hero/Hero.cpp)\n"
-              << "  (chain length " << hero.eventLog.size() << ")\n";
+    size_t printed = 0;
+    for (const auto* p = hero.eventLog.tail();
+        p != nullptr && (n = 0 || printed < 0);
+        p = p->prev, ++printed){ 
+        cout << " " << setw(2) << right << (printed + 1) << ". " << p->data << endl;
+    }
+    cout << "oldest first; chain length " << hero.eventLog.size() << endl;
 }
 
 }  // namespace dungeon
