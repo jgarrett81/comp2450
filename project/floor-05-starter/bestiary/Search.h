@@ -19,10 +19,11 @@
 #include <cstddef>
 #include <string>
 #include <vector>
+#include <algorithm> //std::find_if
 
 #include "../hero/Bag.h"
 #include "Monster.h"
-
+using namespace std;
 namespace dungeon {
 
 // ---- Floor 1 reference: Monster-specific searches ---------------------
@@ -63,10 +64,12 @@ const Monster* findMonster(const std::vector<Monster>& bestiary,
 
 template <typename T>
 const T* findByName(const Bag<T>& items, const std::string& name) {
-    for (const auto& it : items) {
-        if (it.name == name) return &it;
-    }
-    return nullptr;
+    //return pointer to first match or nullptr
+    //&*it -> deference iterator to refernce then take its address
+    auto it = find_if(items.begin(), items.end(),
+        [&name](const T& x) {return x.name == name;});
+    return (it != items.end()) ? &*it : nullptr;
 }
 
 }  // namespace dungeon
+
