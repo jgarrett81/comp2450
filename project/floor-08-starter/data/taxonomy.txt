@@ -18,6 +18,7 @@ Creatures of the Hold/Undead/Incorporeal/Wisp
 Creatures of the Hold/Beasts/Mammals/Shadow Hound
 Creatures of the Hold/Beasts/Mammals/Ironclaw Bear
 Creatures of the Hold/Beasts/Mammals/Cinder Bat
+Creatures of the Hold/Beasts/Mammals/Goblin
 Creatures of the Hold/Beasts/Giants/Cave Troll
 Creatures of the Hold/Beasts/Giants/Frostmaw
 Creatures of the Hold/Vermin/Bone Spider
